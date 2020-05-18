@@ -47,21 +47,33 @@ stateCOVID19_df.drop(stateCOVID19_df[33:].index, inplace=True)
 
 #
 # Clean data & Change datatypes of the # columns
-if (debug): print(stateCOVID19_df.columns)
-if (debug): print(stateCOVID19_df.dtypes)
-stateCOVID19_df[stateCOVID19_df.columns[2]].replace(r"\*", "", regex=True, inplace=True)
-stateCOVID19_df[stateCOVID19_df.columns[2]] = stateCOVID19_df[stateCOVID19_df.columns[2]].apply(pd.to_numeric)
-stateCOVID19_df[stateCOVID19_df.columns[3]] = stateCOVID19_df[stateCOVID19_df.columns[3]].apply(pd.to_numeric)
-stateCOVID19_df[stateCOVID19_df.columns[4]] = stateCOVID19_df[stateCOVID19_df.columns[4]].apply(pd.to_numeric)
-if (debug): print(stateCOVID19_df.dtypes)
+colnames = stateCOVID19_df.columns
+coltypes = stateCOVID19_df.dtypes
+if (debug): print(colnames)
+if (debug): print(coltypes)
+stateCOVID19_df[colnames[2]].replace(r"\*", "", regex=True, inplace=True)
+stateCOVID19_df[colnames[2]] = stateCOVID19_df[colnames[2]].apply(pd.to_numeric)
+stateCOVID19_df[colnames[3]] = stateCOVID19_df[colnames[3]].apply(pd.to_numeric)
+stateCOVID19_df[colnames[4]] = stateCOVID19_df[colnames[4]].apply(pd.to_numeric)
+if (debug): print(coltypes)
+
 
 #
 # Count no. of states & UT together in our dataset
 nstatesuts = stateCOVID19_df[stateCOVID19_df.columns[1]].nunique()
 print(' >> [Updated] COVID19-INDIA State-wide data')
-ntotcases   = stateCOVID19_df[stateCOVID19_df.columns[2]].sum()
-nrecoveries = stateCOVID19_df[stateCOVID19_df.columns[3]].sum()
-ndeadths    = stateCOVID19_df[stateCOVID19_df.columns[4]].sum()
+ntotcases   = stateCOVID19_df[colnames[2]].sum()
+nrecoveries = stateCOVID19_df[colnames[3]].sum()
+ndeadths    = stateCOVID19_df[colnames[4]].sum()
+
+
+#
+# Create a normalized (aginst total cases in the country) state-wide data
+nstateCOVID19_df = stateCOVID19_df.copy()
+nstateCOVID19_df[colnames[2]] = nstateCOVID19_df[colnames[2]]/1000
+nstateCOVID19_df[colnames[3]] = nstateCOVID19_df[colnames[3]]/1000
+nstateCOVID19_df[colnames[4]] = nstateCOVID19_df[colnames[4]]/1000
+if (debug): print(nstateCOVID19_df)
 
 #
 # Print out summary of the case data
@@ -80,5 +92,6 @@ if (save2json):
 # Plot State-wide da(ta
 if (plot2show):
     print(' >> Plotting ...')
-    stateCOVID19_df.plot(kind='bar', x=stateCOVID19_df.columns[1], y=stateCOVID19_df.columns[2:5])
+    nstateCOVID19_df.plot(kind='bar', x=colnames[1], y=colnames[2:])
+    plt.ylabel('# Cases/Cured/Deaths in the country (x1000)')
     plt.show()
