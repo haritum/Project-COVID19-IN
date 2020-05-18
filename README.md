@@ -13,6 +13,6 @@ In this repository, I keep track of files created as a part of **[Project to aut
 
 - Let's now use this up-to-date Covid19 data and create a informative visualizations of the Pandemic scence in India. 
 	- [x] Bar plot of state-wide info. on # Cases, # Recoveries, # Deaths
-	- [x] Heatmap of the # Cases
-	- [x] Heatmap of the # Recoveries
-	- [x] Heatmap of the # Deaths
+	- [x] Choropleth Map of the # Cases
+	- [x] Choropleth Map of the # Recoveries
+	- [x] Choropleth Map of the # Deaths
